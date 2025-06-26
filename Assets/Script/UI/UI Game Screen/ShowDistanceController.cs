@@ -1,6 +1,7 @@
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class ShowDistanceController : MonoBehaviour
@@ -11,14 +12,20 @@ public class ShowDistanceController : MonoBehaviour
 
     private void Awake()
     {
+        if (SceneManager.GetActiveScene().name == "MainGame")
+        {
         player = GameObject.Find("Player").GetComponent<Player>();
         distanceText = GameObject.Find("DistanceText").GetComponent<TMP_Text>();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        int distance = Mathf.FloorToInt(player.distance);
-        distanceText.text = distance + " m";
+        if (SceneManager.GetActiveScene().name == "MainGame")
+        {
+            int distance = Mathf.FloorToInt(player.distance);
+            distanceText.text = distance + " m";
+        }
     }
 }
