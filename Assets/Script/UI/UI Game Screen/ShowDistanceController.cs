@@ -1,12 +1,13 @@
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; 
+using TMPro;
 
-public class UIController : MonoBehaviour
+public class ShowDistanceController : MonoBehaviour
 {
     Player player;
     TMP_Text distanceText;
+
 
     private void Awake()
     {
@@ -17,7 +18,7 @@ public class UIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       int distance = Mathf.FloorToInt(player.distance);
-       distanceText.text = distance + " m"; 
+        int distance = Mathf.FloorToInt(player.distance);
+        distanceText.text = distance + " m";
     }
 }

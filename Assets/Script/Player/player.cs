@@ -22,9 +22,12 @@ public class Player : MonoBehaviour
     private bool jumpPressed = false;
     private bool jumpHeld = false;
 
+    Animator animator;
+
     void Awake()
     {
         controls = new InputSystem_Actions();
+        animator = GetComponent<Animator>();
 
         // When jump starts
         controls.Player.Jump.started += ctx =>
@@ -74,8 +77,9 @@ public class Player : MonoBehaviour
 
         if (!isGrounded)
         {
-            position.y += velocity.y * Time.fixedDeltaTime;
-            velocity.y += gravity * Time.fixedDeltaTime;
+            animator.SetBool("IsJumping", !isGrounded);
+            position.y += velocity.y * Time.deltaTime;
+            velocity.y += gravity * Time.deltaTime;
 
             if (position.y <= groundHeghit)
             {
@@ -86,6 +90,7 @@ public class Player : MonoBehaviour
         }
         if (isGrounded)
         {
+            animator.SetBool("IsJumping", !isGrounded);
             float velocityRatio = velocity.x / maxXVelocity;
             acceleration = maxAcceleration * (1 - velocityRatio);
             velocity.x += acceleration * Time.deltaTime;

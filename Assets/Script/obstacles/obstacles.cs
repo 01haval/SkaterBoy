@@ -4,12 +4,13 @@ public class obstacles : MonoBehaviour
 {
     Player player;
     Parallax_Endless roade;
+    GameController gameController;
 
     private void Awake()
     {
         player = GameObject.Find("Player").GetComponent<Player>();
         roade = GameObject.Find("Roade").GetComponent<Parallax_Endless>();
-
+        gameController = GameObject.Find("GameController").GetComponent<GameController>();
     }
 
 
@@ -17,15 +18,9 @@ public class obstacles : MonoBehaviour
     {
 
     }
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D()
     {
-        Debug.Log("Player hit obstacle! Game Over screen would show now.");
-
-        if (other.CompareTag("Player"))
-        {
-            Debug.Log("Player hit obstacle! Game Over screen would show now.");
-            // Here you can later trigger death screen, stop game, etc.
-        }
+        gameController.GameOver();
     }
 
     void Update()
