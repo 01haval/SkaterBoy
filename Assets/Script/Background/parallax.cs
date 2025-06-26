@@ -19,6 +19,7 @@ public class parallax : MonoBehaviour
 
     }
 
+
     void Update()
     {
         float realVelocity = player.velocity.x / depth;
@@ -33,6 +34,7 @@ public class parallax : MonoBehaviour
 
         transform.position = postion;
     }
+
 
 
 }

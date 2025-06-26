@@ -23,11 +23,19 @@ public class Player : MonoBehaviour
     private bool jumpHeld = false;
 
     Animator animator;
+    AudioSource audioSource;
+
+    // Public audio clips for jump and land
+    public AudioClip jumpSound;
+    public AudioClip landSound;
+
+    bool oneSoundjump = true;
 
     void Awake()
     {
         controls = new InputSystem_Actions();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
 
         // When jump starts
         controls.Player.Jump.started += ctx =>
@@ -46,6 +54,11 @@ public class Player : MonoBehaviour
     void OnEnable()
     {
         controls.Player.Enable();
+        // Play jump sound
+        if (jumpSound != null )
+        {
+            audioSource.PlayOneShot(jumpSound);
+        }
     }
 
     void OnDisable()
@@ -61,6 +74,8 @@ public class Player : MonoBehaviour
             velocity.y = jumpVelocity;
             jumpPressed = false;
             jumpStartY = transform.position.y; // Store jump start height
+
+
         }
 
         // Only reduce velocity if minimum height is reached
@@ -73,10 +88,12 @@ public class Player : MonoBehaviour
                 velocity.y *= 0.5f; // Cut upward velocity for short jump
             }
         }
+
         Vector2 position = transform.position;
 
         if (!isGrounded)
         {
+            audioSource.Pause();
             animator.SetBool("IsJumping", !isGrounded);
             position.y += velocity.y * Time.deltaTime;
             velocity.y += gravity * Time.deltaTime;
@@ -86,10 +103,23 @@ public class Player : MonoBehaviour
                 position.y = groundHeghit;
                 isGrounded = true;
                 velocity.y = 0;
+                oneSoundjump = true;
+
+                // Play land sound
+                if (landSound != null)
+                {
+                    audioSource.PlayOneShot(landSound);
+                }
             }
         }
+
         if (isGrounded)
         {
+            if (!audioSource.isPlaying)
+                {
+                    audioSource.UnPause();
+                }
+
             animator.SetBool("IsJumping", !isGrounded);
             float velocityRatio = velocity.x / maxXVelocity;
             acceleration = maxAcceleration * (1 - velocityRatio);
@@ -99,14 +129,9 @@ public class Player : MonoBehaviour
                 velocity.x = maxXVelocity;
             }
         }
+
         distance += velocity.x * Time.deltaTime;
-
         transform.position = position;
-
     }
 
-    private void FixedUpdate()
-    {
-
-    }
 }

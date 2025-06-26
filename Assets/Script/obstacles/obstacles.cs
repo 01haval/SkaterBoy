@@ -3,13 +3,11 @@ using UnityEngine;
 public class obstacles : MonoBehaviour
 {
     Player player;
-    Parallax_Endless roade;
     GameController gameController;
 
     private void Awake()
     {
         player = GameObject.Find("Player").GetComponent<Player>();
-        roade = GameObject.Find("Roade").GetComponent<Parallax_Endless>();
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
     }
 
